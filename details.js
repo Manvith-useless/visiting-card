@@ -3,7 +3,7 @@ window.CARD = {
   industryName: "Durga Ceramics",
   tagline: "Alumina Refractory Castables · Refractory Bricks · Insulating Fire Bricks",
   ownerName: "A. N. Subrahmanyam",
-  ownerTitle: "",
+  ownerTitle: "Owner",
   ownerPhone: "+91 99494 02221",
   ownerWhatsapp: "916399937777",
   website: "https://www.durgaceramics.com",
