@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Digital Visiting Card</title>
+<style>
+  :root {
+    --navy: #12263f;
+    --accent: #e08a1e;
+    --green: #1fa855;
+    --ink: #1d2733;
+    --muted: #5f6b7a;
+    --line: #dfe5ec;
+    --page: #f1f3f6;
+    --surface: #ffffff;
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--page);
+    color: var(--ink);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.4;
+    -webkit-text-size-adjust: 100%;
+    overflow-wrap: anywhere;
+  }
+  .wrap { max-width: 440px; margin: 0 auto; padding: 0 16px 24px; }
+
+  .hero {
+    background: var(--navy);
+    color: #fff;
+    margin: 0 -16px;
+    padding: 32px 20px 28px;
+    text-align: center;
+    border-radius: 0 0 20px 20px;
+  }
+  .monogram {
+    width: 76px; height: 76px; margin: 0 auto 14px;
+    border-radius: 50%;
+    background: #fff; color: var(--navy);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px; font-weight: 700; letter-spacing: 1px;
+    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.15);
+  }
+  .industry { margin: 0; font-size: 22px; font-weight: 700; line-height: 1.25; }
+  .tagline { margin: 6px 0 0; font-size: 15px; color: #c9d4e3; }
+
+  .owner { text-align: center; margin-top: 22px; }
+  .owner .name { margin: 0; font-size: 20px; font-weight: 700; }
+  .owner .title { margin: 2px 0 0; color: var(--muted); font-size: 15px; }
+  .email-link {
+    display: inline-flex; align-items: center; min-height: 48px;
+    color: var(--navy); font-size: 15px; text-decoration: underline;
+  }
+
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+  .tile {
+    min-height: 92px; padding: 12px 8px;
+    border-radius: 12px; background: var(--navy); color: #fff;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
+    text-decoration: none; font-weight: 600; font-size: 15px; text-align: center;
+    min-width: 0;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .tile.wa, .btn.wa { background: var(--green); }
+  .tile:active, .btn:active, .save:active { transform: scale(0.98); }
+  .tile svg, .btn svg { width: 26px; height: 26px; flex: none; }
+  .address { margin: 12px 4px 0; text-align: center; color: var(--muted); font-size: 14px; }
+
+  .card {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
+    padding: 16px; margin-top: 22px;
+  }
+  .card h2 { margin: 0 0 6px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+  .card .name { margin: 0; font-size: 18px; font-weight: 700; }
+  .card .title { margin: 2px 0 0; color: var(--muted); font-size: 14px; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+  .btn {
+    min-height: 48px; padding: 10px 12px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    background: var(--navy); color: #fff; text-decoration: none;
+    font-weight: 600; font-size: 15px; min-width: 0;
+  }
+
+  .save {
+    width: 100%; min-height: 52px; margin-top: 22px;
+    border: 0; border-radius: 12px;
+    background: var(--accent); color: var(--ink);
+    font: inherit; font-weight: 700; font-size: 17px;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    cursor: pointer;
+  }
+  .save svg { width: 24px; height: 24px; flex: none; }
+
+  .foot { margin: 22px 0 0; text-align: center; color: #7d8795; font-size: 12px; }
+
+  @media (max-width: 360px) {
+    .wrap { padding: 0 12px 20px; }
+    .hero { margin: 0 -12px; padding: 28px 16px 24px; }
+    .tile { font-size: 14px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div class="monogram" id="monogram" aria-hidden="true"></div>
+    <h1 class="industry" id="industry"></h1>
+    <p class="tagline" id="tagline"></p>
+  </header>
+
+  <section class="owner">
+    <p class="name" id="owner-name"></p>
+    <p class="title" id="owner-title"></p>
+    <a class="email-link" id="email-link" hidden></a>
+  </section>
+
+  <nav class="grid" aria-label="Contact actions">
+    <a class="tile" id="btn-call">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="2" width="10" height="20" rx="2"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
+      <span>Call</span>
+    </a>
+    <a class="tile wa" id="btn-wa" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1.3-3.9A8 8 0 1 1 8.2 19z"/></svg>
+      <span>WhatsApp</span>
+    </a>
+    <a class="tile" id="btn-web" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 3 2.5 15 0 18M12 3c-2.5 3-2.5 15 0 18"/></svg>
+      <span>Website</span>
+    </a>
+    <a class="tile" id="btn-loc" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg>
+      <span>Location</span>
+    </a>
+  </nav>
+  <p class="address" id="address"></p>
+
+  <section class="card" aria-labelledby="sales-heading">
+    <h2 id="sales-heading">Sales contact</h2>
+    <p class="name" id="sales-name"></p>
+    <p class="title" id="sales-title"></p>
+    <div class="row">
+      <a class="btn" id="sales-call">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="2" width="10" height="20" rx="2"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
+        <span>Call</span>
+      </a>
+      <a class="btn wa" id="sales-wa" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1.3-3.9A8 8 0 1 1 8.2 19z"/></svg>
+        <span>WhatsApp</span>
+      </a>
+    </div>
+  </section>
+
+  <button class="save" id="save-contact" type="button">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M4 20h16"/></svg>
+    <span>Save contact</span>
+  </button>
+
+  <p class="foot">Sample card. Details are placeholders.</p>
+</div>
+
+<script src="details.js"></script>
+<script>
+(function () {
+  var C = window.CARD || {};
+
+  function setText(id, value) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    if (value) { el.textContent = value; el.hidden = false; } else { el.hidden = true; }
+  }
+  function setLink(id, href) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    if (href) { el.setAttribute('href', href); } else { el.hidden = true; }
+  }
+  function digits(s) { return String(s || '').replace(/[^0-9]/g, ''); }
+  function initials(name) {
+    return String(name || '').split(/\s+/)
+      .filter(function (w) { return /^[A-Za-z]/.test(w); })
+      .slice(0, 2)
+      .map(function (w) { return w.charAt(0).toUpperCase(); })
+      .join('');
+  }
+
+  // Escape text for a vCard 3.0 value.
+  function esc(v) {
+    return String(v == null ? '' : v)
+      .replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\r?\n/g, '\\n');
+  }
+  function buildVcard() {
+    var lines = ['BEGIN:VCARD', 'VERSION:3.0'];
+    function add(line) { lines.push(line); }
+    if (C.ownerName) { add('N:;' + esc(C.ownerName) + ';;;'); add('FN:' + esc(C.ownerName)); }
+    if (C.industryName) add('ORG:' + esc(C.industryName));
+    if (C.ownerTitle) add('TITLE:' + esc(C.ownerTitle));
+    if (C.ownerPhone) add('TEL;TYPE=CELL:' + C.ownerPhone);
+    if (C.website) add('URL:' + C.website);
+    if (C.email) add('EMAIL:' + C.email);
+    if (C.address) add('ADR;TYPE=WORK:;;' + esc(C.address) + ';;;;');
+    var sales = [C.salesName, C.salesPhone].filter(Boolean).join(' ');
+    if (sales) add('NOTE:' + esc('Sales contact: ' + sales));
+    lines.push('END:VCARD');
+    return lines.join('\r\n') + '\r\n';
+  }
+  function saveContact() {
+    var blob = new Blob([buildVcard()], { type: 'text/vcard' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'contact.vcf';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+  }
+
+  var mapsUrl = C.mapsUrl || (C.address
+    ? 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(C.address)
+    : '');
+  var waOwner = C.ownerWhatsapp ? 'https://wa.me/' + digits(C.ownerWhatsapp) : '';
+  var waSales = C.salesWhatsapp ? 'https://wa.me/' + digits(C.salesWhatsapp) : '';
+
+  document.title = C.industryName || 'Digital Visiting Card';
+  setText('monogram', initials(C.industryName));
+  setText('industry', C.industryName);
+  setText('tagline', C.tagline);
+  setText('owner-name', C.ownerName);
+  setText('owner-title', C.ownerTitle);
+  setText('address', C.address);
+  setText('sales-name', C.salesName);
+  setText('sales-title', C.salesTitle);
+
+  setLink('email-link', C.email ? 'mailto:' + C.email : '');
+  setText('email-link', C.email);
+
+  setLink('btn-call', C.ownerPhone ? 'tel:' + C.ownerPhone : '');
+  setLink('btn-wa', waOwner);
+  setLink('btn-web', C.website);
+  setLink('btn-loc', mapsUrl);
+  setLink('sales-call', C.salesPhone ? 'tel:' + C.salesPhone : '');
+  setLink('sales-wa', waSales);
+
+  document.getElementById('save-contact').addEventListener('click', saveContact);
+})();
+</script>
+</body>
+</html>
