@@ -12,7 +12,7 @@ window.CARD = {
   salesName: "Nagaraju",
   salesTitle: "DC Marketing",
   salesPhone: "+91 99025 56557",
-  salesWhatsapp: "",
+  salesWhatsapp: "919902556557",
   email: "durgaceramics@yahoo.co.in",
   pageUrl: "https://manvith-useless.github.io/visiting-card/"
 };
