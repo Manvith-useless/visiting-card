@@ -126,6 +126,7 @@
         <span>WhatsApp</span>
       </a>
     </div>
+    <a class="email-link" id="sales-email" hidden></a>
   </section>
 
   <section class="owner">
@@ -234,6 +235,8 @@
 
   setLink('email-link', C.email ? 'mailto:' + C.email : '');
   setText('email-link', C.email);
+  setLink('sales-email', C.salesEmail ? 'mailto:' + C.salesEmail : '');
+  setText('sales-email', C.salesEmail);
 
   function tel(p) { return p ? 'tel:' + String(p).replace(/[^0-9+]/g, '') : ''; }
   if (!C.salesName && !C.salesPhone && !C.salesWhatsapp) {
