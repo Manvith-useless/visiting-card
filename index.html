@@ -113,6 +113,21 @@
     <p class="tagline" id="tagline"></p>
   </header>
 
+  <section class="card" id="sales-card" aria-labelledby="sales-heading">
+    <h2 id="sales-heading">Sales contact</h2>
+    <p class="name" id="sales-name"></p>
+    <div class="row">
+      <a class="btn" id="sales-call">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="2" width="10" height="20" rx="2"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
+        <span>Call</span>
+      </a>
+      <a class="btn wa" id="sales-wa" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1.3-3.9A8 8 0 1 1 8.2 19z"/></svg>
+        <span>WhatsApp</span>
+      </a>
+    </div>
+  </section>
+
   <section class="owner">
     <p class="name" id="owner-name"></p>
     <p class="title" id="owner-title"></p>
@@ -138,22 +153,6 @@
     </a>
   </nav>
   <p class="address" id="address"></p>
-
-  <section class="card" id="sales-card" aria-labelledby="sales-heading">
-    <h2 id="sales-heading">Sales contact</h2>
-    <p class="name" id="sales-name"></p>
-    <p class="title" id="sales-title"></p>
-    <div class="row">
-      <a class="btn" id="sales-call">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="2" width="10" height="20" rx="2"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
-        <span>Call</span>
-      </a>
-      <a class="btn wa" id="sales-wa" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1.3-3.9A8 8 0 1 1 8.2 19z"/></svg>
-        <span>WhatsApp</span>
-      </a>
-    </div>
-  </section>
 
   <button class="save" id="save-contact" type="button">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M4 20h16"/></svg>
@@ -231,7 +230,7 @@
   setText('owner-title', C.ownerTitle);
   setText('address', C.address);
   setText('sales-name', C.salesName);
-  setText('sales-title', C.salesTitle);
+  setText('sales-heading', C.salesTitle || 'Sales contact');
 
   setLink('email-link', C.email ? 'mailto:' + C.email : '');
   setText('email-link', C.email);
