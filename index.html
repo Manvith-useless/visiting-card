@@ -139,7 +139,7 @@
   </nav>
   <p class="address" id="address"></p>
 
-  <section class="card" aria-labelledby="sales-heading">
+  <section class="card" id="sales-card" aria-labelledby="sales-heading">
     <h2 id="sales-heading">Sales contact</h2>
     <p class="name" id="sales-name"></p>
     <p class="title" id="sales-title"></p>
@@ -159,8 +159,6 @@
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M4 20h16"/></svg>
     <span>Save contact</span>
   </button>
-
-  <p class="foot">Sample card. Details are placeholders.</p>
 </div>
 
 <script src="details.js"></script>
@@ -238,11 +236,16 @@
   setLink('email-link', C.email ? 'mailto:' + C.email : '');
   setText('email-link', C.email);
 
-  setLink('btn-call', C.ownerPhone ? 'tel:' + C.ownerPhone : '');
+  function tel(p) { return p ? 'tel:' + String(p).replace(/[^0-9+]/g, '') : ''; }
+  if (!C.salesName && !C.salesPhone && !C.salesWhatsapp) {
+    document.getElementById('sales-card').hidden = true;
+  }
+
+  setLink('btn-call', tel(C.ownerPhone));
   setLink('btn-wa', waOwner);
   setLink('btn-web', C.website);
   setLink('btn-loc', mapsUrl);
-  setLink('sales-call', C.salesPhone ? 'tel:' + C.salesPhone : '');
+  setLink('sales-call', tel(C.salesPhone));
   setLink('sales-wa', waSales);
 
   document.getElementById('save-contact').addEventListener('click', saveContact);
